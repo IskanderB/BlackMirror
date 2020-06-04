@@ -23,19 +23,19 @@ class RegisterController extends Controller
         $user = User::create([
             'name' => $request->name,
             'password' => Hash::make($password),
-            'social_link' => $request->social_link,
+            'vk_link' => $request->vk_link,
+            'description' => $request->description,
+            'foto_link' => $request->foto_link,
         ]);
 
         $token = $user->createToken(config('Test'));
         $token->token->save();
 
         return response()->json([
-            'message' => 'You were successfully registered. Use your token for calls',
+            'success' => true,
             'user_id' => $user->id,
-            'password' => $password,
             'token_type' => 'Bearer',
             'token' => $token->accessToken,
-            'expires_at' => Carbon::parse($token->token->expires_at)->toDateTimeString(),
         ], 200);
     }
 }

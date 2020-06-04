@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Api\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class RegisterFormRequest extends FormRequest
 {
@@ -16,6 +18,10 @@ class RegisterFormRequest extends FormRequest
         return true;
     }
 
+    protected function failedValidation(Validator $validator) {
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,7 +31,9 @@ class RegisterFormRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'social_link' => ['required', 'string', 'max:255'],
+            'vk_link' => ['required', 'string', 'max:255'],
+            'description' => ['string', 'max:65535'],
+            'foto_link' => ['string', 'max:65535'],
         ];
     }
 }

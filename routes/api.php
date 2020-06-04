@@ -23,6 +23,10 @@ Route::middleware('auth:api')->group(function(){
 });
 
 Route::group(['namespace' => 'Api'], function () {
+    Route::middleware('auth:api')->group(function(){
+        Route::get('v1/users/getting', 'GetUserController@getUser')->name('getting_user');
+    });
+
     Route::group(['namespace' => 'Auth'], function () {
         Route::post('v1/register', 'RegisterController');
     });
